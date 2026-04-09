@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head><title>QR Code Generator</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+margin:0;
+height:100vh;
+background-image:url("bg1.jpeg");
+background-repeat:no-repeat;
+background-position:center;
+background-size:cover;
+}
+.main{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:80px;
+}
+form{
+width:350px;
+}
+.sub{
+display:flex;
+flex-direction:column;
+align-iteme:center;
+}
+</style>
+</head>
+<body>
+<div class="main">
+<form>
+<div><h3 style="text-align:center;"> QR GENERATOR </h3></div> <br>
+<div class="form-floating mb-3">
+  <input type="text" class="form-control" id="name" placeholder="name@example.com">
+  <label for="floatingInput">Name</label>
+</div>
+<div class="form-floating mb-3">
+  <input type="text" class="form-control" id="phone" placeholder="Phoneno">
+  <label for="floatingPassword">Phone Number</label>
+</div>
+<div class="form-floating mb-3">
+  <input type="text" class="form-control" id="website" placeholder="website.com">
+  <label for="floatingInput">Website</label>
+</div>
+<select class="form-select mb-3" aria-label="Default select example">
+  <option selected>Role</option>
+  <option value="1">Individual</option>
+  <option value="2">Organization</option>
+</select>
+<div class="form-floating mb-3">
+  <input type="Email" class="form-control" id="email" placeholder="Email">
+  <label for="floatingPassword">Email ID</label>
+</div>
+<div class="mb-3">
+  <label for="floatingPassword">Address</label>
+  <textarea class="form-control" id="address" rows="3"></textarea>
+</div>
+<div class="form-floating mb-3">
+  <input type="text" class="form-control" id="location" placeholder="website.com">
+  <label for="floatingInput">Location</label>
+</div>
+<div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="confirm">
+    <label class="form-check-label" for="exampleCheck1">Confirm details</label>
+</div>
+<button type="button" class="btn btn-primary" onclick="show()">Generate QR</button><br>
+</form>
+<div class="sub">
+<div id="space"></div><br>
+<button type="button" class="btn btn-primary" onclick="download()">Download QR</button>
+<div id="qrdownload"></div>
+</div>
+</div>
+
+<script>
+function show()
+{
+const name=document.getElementById("name").value;
+const phone=document.getElementById("phone").value;
+const website=document.getElementById("website").value;
+const email=document.getElementById("email").value;
+const address=document.getElementById("address").value;
+const location=document.getElementById("location").value;
+const check=document.getElementById("confirm");
+
+if(name==="" || phone==="" || website==="" || email==="" || address==="")
+ {
+ alert("Please fill the required fields");
+ return;
+ }
+if(!check.checked)
+ {
+ alert("Please confirm the details");
+ return;
+ }
+ 
+ let data= `MECARD:
+N:${name};
+TEL:${phone};
+EMAIL:${email};
+URL:${website};
+ADD:${address};
+NOTE:Location ${location};
+;`;
+ 
+ 
+document.getElementById("space").innerHTML="";
+
+new QRCode(document.getElementById("space"),{ text:data, height:200, width:200});
+}
+
+
+function download()
+{
+let qrcanvas=document.querySelector("#space canvas");
+if(!qrcanvas)
+ {
+ alert("Please generate QR first");
+ return;
+ }
+let qrimage=qrcanvas.toDataURL("image/png");
+
+let link = document.createElement("a");
+link.href = qrimage;
+link.download = "my_qr_code.png";
+link.click();
+}
+
+
+</script>
+
+</body>
+</html>
